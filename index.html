@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>أرنوب يعلّمني</title>
+<meta name="theme-color" content="#7bc96f">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;800&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#bfe8ff;--grass:#7bc96f;--grass-d:#4fa24a;--carrot:#ff8a3d;--ink:#2b3a55;--ok:#2fb86b;--bad:#ef5b5b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{font-family:"Baloo Bhaijaan 2",Tajawal,"Segoe UI",system-ui,sans-serif;color:var(--ink);
+background:linear-gradient(var(--sky) 0 62%,var(--grass) 62%);
+padding:env(safe-area-inset-top,0) 16px env(safe-area-inset-bottom,0);
+display:flex;flex-direction:column;align-items:center;overflow-x:hidden}
+header{width:100%;max-width:480px;display:flex;justify-content:space-between;align-items:center;padding:12px 0}
+.pill{border:0;background:#fff;border-radius:999px;padding:8px 18px;font:inherit;font-size:20px;color:var(--ink);box-shadow:0 3px 0 rgba(43,58,85,.15)}
+#home[hidden]{visibility:hidden;display:block}
+main{width:100%;max-width:480px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+#bunny{width:150px;height:175px;transition:width .3s,height .3s}
+#bunny.small{width:96px;height:112px}
+#bunny.hop{animation:hop .7s ease-out}
+#bunny.no{animation:no .5s}
+@keyframes hop{0%,100%{transform:translateY(0)}35%{transform:translateY(-46px) rotate(-5deg)}65%{transform:translateY(-18px) rotate(4deg)}}
+@keyframes no{0%,100%{transform:translateX(0)}25%{transform:translateX(-12px)}75%{transform:translateX(12px)}}
+h1{font-size:38px;margin:0;font-weight:800;line-height:1.2}
+.sub{font-size:20px;margin:0}
+.big{width:100%;border:0;border-radius:28px;padding:18px;font:inherit;font-size:28px;font-weight:800;color:#fff;
+background:var(--carrot);box-shadow:0 7px 0 #d96a1f;transition:transform .1s,box-shadow .1s}
+.big.alt{background:#5b8def;box-shadow:0 7px 0 #3f6bc7}
+.big:active{transform:translateY(5px);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+#prompt{font-size:26px;font-weight:800;margin:0;min-height:68px;display:flex;align-items:center}
+#stage{font-size:44px;line-height:1.15;min-height:96px;max-width:100%;word-break:break-all}
+#stage.word{font-size:74px}
+#opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%}
+.opt{border:0;border-radius:24px;height:100px;font:inherit;font-size:52px;font-weight:800;color:var(--ink);background:#fff;box-shadow:0 6px 0 rgba(43,58,85,.2)}
+.opt:active{transform:translateY(4px)}
+.opt.ok{background:var(--ok);color:#fff}
+.opt.bad{background:var(--bad);color:#fff}
+button:focus-visible{outline:4px solid #fff;outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-height:640px){#bunny{width:110px;height:128px}h1{font-size:30px}}
+</style>
+</head>
+<body>
+<header>
+  <button class="pill" id="home" hidden>الرئيسية</button>
+  <span class="pill" id="stars" aria-live="polite">⭐ 0</span>
+</header>
+<main>
+  <svg id="bunny" viewBox="0 0 120 140" role="img" aria-label="الأرنب أرنوب">
+    <ellipse cx="42" cy="34" rx="12" ry="30" fill="#d9dde3"/><ellipse cx="42" cy="36" rx="5.5" ry="20" fill="#ffb7c5"/>
+    <ellipse cx="78" cy="34" rx="12" ry="30" fill="#d9dde3"/><ellipse cx="78" cy="36" rx="5.5" ry="20" fill="#ffb7c5"/>
+    <ellipse cx="60" cy="92" rx="42" ry="38" fill="#e8ebf0"/>
+    <path d="M44 62 Q60 38 76 62 Z" fill="#ff8a3d"/><ellipse cx="60" cy="62" rx="19" ry="5" fill="#e6711f"/>
+    <circle cx="46" cy="88" r="6" fill="#2b3a55"/><circle cx="74" cy="88" r="6" fill="#2b3a55"/>
+    <circle cx="48" cy="86" r="2" fill="#fff"/><circle cx="76" cy="86" r="2" fill="#fff"/>
+    <circle cx="36" cy="102" r="6" fill="#ffb7c5" opacity=".8"/><circle cx="84" cy="102" r="6" fill="#ffb7c5" opacity=".8"/>
+    <ellipse cx="60" cy="98" rx="4.5" ry="3.5" fill="#f47fa0"/>
+    <path d="M52 106 Q60 114 68 106" fill="none" stroke="#2b3a55" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+
+  <section id="menu" style="width:100%;display:flex;flex-direction:column;gap:14px">
+    <h1>أرنوب يعلّمني</h1>
+    <p class="sub">اختر لعبة وهيّا نقفز معًا!</p>
+    <button class="big" data-mode="num">🥕 نعدّ الجزر</button>
+    <button class="big alt" data-mode="let">🔤 نتعرّف على الحروف</button>
+  </section>
+
+  <section id="game" hidden style="width:100%;display:flex;flex-direction:column;align-items:center;gap:12px">
+    <p id="prompt"></p>
+    <div id="stage" aria-hidden="true"></div>
+    <div id="opts"></div>
+  </section>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const LETTERS = [['أ','أرنب','🐰'],['ب','بطة','🦆'],['ت','تفاحة','🍎'],['ج','جمل','🐪'],['ح','حصان','🐴'],
+  ['ز','زرافة','🦒'],['س','سمكة','🐟'],['ف','فراشة','🦋'],['ق','قطة','🐱'],['ن','نحلة','🐝']];
+const PRAISE = ['أحسنت!','ممتاز!','برافو!','رائع!','يا سلام!'];
+let mode = '', answer = '', stars = 0, locked = false;
+
+try { stars = parseInt(localStorage.getItem('arnoub-stars') || '0', 10) || 0; } catch (e) {}
+const ar = n => Number(n).toLocaleString('ar-EG');
+const rnd = n => Math.floor(Math.random() * n);
+const showStars = () => { $('#stars').textContent = '⭐ ' + ar(stars); };
+showStars();
+
+function speak(text) {
+  try {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'ar-SA'; u.rate = 0.85;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  } catch (e) {}
+}
+function anim(cls) {
+  const b = $('#bunny'); b.classList.remove('hop', 'no'); void b.getBoundingClientRect(); b.classList.add(cls);
+}
+function pick3(correct, pool) {
+  const s = new Set([correct]);
+  while (s.size < 3) s.add(pool[rnd(pool.length)]);
+  return [...s].sort(() => Math.random() - 0.5);
+}
+
+function go(m) {
+  mode = m;
+  $('#menu').hidden = true; $('#game').hidden = false; $('#home').hidden = false;
+  $('#bunny').classList.add('small');
+  next();
+}
+function home() {
+  mode = ''; speechSynthesis && speechSynthesis.cancel();
+  $('#menu').hidden = false; $('#game').hidden = true; $('#home').hidden = true;
+  $('#bunny').classList.remove('small');
+}
+
+function next() {
+  locked = false;
+  const stage = $('#stage'), prompt = $('#prompt'), opts = $('#opts');
+  let choices, label;
+  if (mode === 'num') {
+    const n = 1 + rnd(10); answer = String(n);
+    stage.className = ''; stage.textContent = '🥕'.repeat(n);
+    prompt.textContent = 'كم جزرة عند أرنوب؟';
+    choices = pick3(answer, Array.from({length: 10}, (_, i) => String(i + 1)));
+    label = v => ar(v);
+  } else {
+    const [l, w, e] = LETTERS[rnd(LETTERS.length)]; answer = l;
+    stage.className = 'word'; stage.textContent = e;
+    prompt.textContent = 'بأي حرف تبدأ كلمة «' + w + '»؟';
+    choices = pick3(l, LETTERS.map(x => x[0]));
+    label = v => v;
+  }
+  opts.innerHTML = '';
+  choices.forEach(v => {
+    const b = document.createElement('button');
+    b.className = 'opt'; b.textContent = label(v); b.dataset.v = v;
+    b.addEventListener('click', () => check(b));
+    opts.appendChild(b);
+  });
+  speak(prompt.textContent);
+}
+
+function check(btn) {
+  if (locked) return;
+  if (btn.dataset.v === answer) {
+    locked = true; btn.classList.add('ok');
+    stars++; showStars();
+    try { localStorage.setItem('arnoub-stars', String(stars)); } catch (e) {}
+    anim('hop'); speak(PRAISE[rnd(PRAISE.length)]);
+    setTimeout(next, 1400);
+  } else {
+    btn.classList.add('bad'); btn.disabled = true;
+    anim('no'); speak('حاول مرة أخرى');
+  }
+}
+
+document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => go(b.dataset.mode)));
+$('#home').addEventListener('click', home);
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>
